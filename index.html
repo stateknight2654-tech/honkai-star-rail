@@ -447,4 +447,13 @@
 
 <script src="script.js"></script>
 </body>
+    <script>
+    window.addEventListener('scroll', () => {
+      document.querySelectorAll('.reveal').forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+          el.classList.add('visible');
+        }
+      });
+    });
+    </script>
 </html>
