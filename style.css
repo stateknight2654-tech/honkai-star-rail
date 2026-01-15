@@ -93,50 +93,34 @@ body {
     position: relative;
     overflow: hidden;
 }
-/* ===== SAO BĂNG CHẠY XUYÊN SUỐT ===== */
-.intro::before,
-.intro::after,
-.features::before,
-.features::after {
-    content: "";
-    position: absolute;
-    top: -150%;
-    left: -150%;
-    width: 400%;
-    height: 400%;
-    pointer-events: none;
-    background-image: linear-gradient(
-        120deg,
-        transparent 45%,
-        rgba(255,255,255,0.6),
-        transparent 55%
-    );
-    animation: meteor 16s linear infinite;
-    opacity: 0.12;
-    z-index: 1;
+#meteor-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 20;
 }
 
-/* lớp thứ 2 lệch pha */
-.intro::after,
-.features::after {
-    animation-duration: 24s;
-    opacity: 0.06;
+.meteor {
+  position: absolute;
+  top: -60px;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    rgba(180,200,255,0.9),
+    rgba(180,200,255,0)
+  );
+  filter: drop-shadow(0 0 6px rgba(120,160,255,0.8));
+  transform: rotate(45deg);
+  animation: fall linear forwards;
 }
 
-/* đẩy nội dung lên trên sao băng */
-.intro > *,
-.features > * {
-    position: relative;
-    z-index: 2;
-}
-
-@keyframes meteor {
-    from {
-        transform: translate(-20%, -20%);
-    }
-    to {
-        transform: translate(20%, 20%);
-    }
+@keyframes fall {
+  to {
+    transform: translate(-700px, 900px) rotate(45deg);
+    opacity: 0;
+  }
 }
 /* ================= NHÂN VẬT ================= */
 .character-grid {
