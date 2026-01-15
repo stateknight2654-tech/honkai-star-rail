@@ -48,12 +48,16 @@
     <div id="content" class="container">
         <h1 style="text-align:center;">Đang tải dữ liệu...</h1>
     </div>
-    
+           <div id="meteor-layer"></div>
+        
         <script src="characters.js"></script>
-    
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    
+        <script src="script.js"></script>
+        
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            ...
+          });
+        </script>
       const params = new URLSearchParams(window.location.search);
       const charId = params.get("id");
       const display = document.getElementById("content");
@@ -125,5 +129,6 @@
       }
     });
 </script>
+<div id="meteor-layer"></div>
 </body>
 </html>
