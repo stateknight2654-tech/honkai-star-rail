@@ -5,7 +5,7 @@ function scrollToIntro() {
 }
 
 const meteorLayer = document.getElementById("meteor-layer");
-const featureSection = document.getElementById("features");
+const introSection = document.getElementById("intro");
 
 let meteorInterval = null;
 
@@ -22,19 +22,20 @@ function createMeteor() {
 
 window.addEventListener("scroll", () => {
 
-  /* Scroll reveal */
+  /* Reveal */
   document.querySelectorAll(".reveal").forEach(el => {
     if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
       el.classList.add("visible");
     }
   });
 
-  /* Sao băng */
-  const featureTop = featureSection.getBoundingClientRect().top;
+  /* Sao băng chỉ ở INTRO */
+  const rect = introSection.getBoundingClientRect();
+  const introVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
-  if (featureTop < window.innerHeight) {
+  if (introVisible) {
     if (!meteorInterval) {
-      meteorInterval = setInterval(createMeteor, 500);
+      meteorInterval = setInterval(createMeteor, 600);
     }
   } else {
     if (meteorInterval) {
