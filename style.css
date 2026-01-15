@@ -251,3 +251,31 @@ footer {
     transform: translate(-600px, 800px) rotate(45deg);
   }
 }
+#meteor-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: repeating-linear-gradient(
+    120deg,
+    transparent 0%,
+    transparent 48%,
+    rgba(255,255,255,0.3) 50%,
+    transparent 52%
+  );
+  animation: meteorMove 20s linear infinite;
+  opacity: 0.15;
+}
+
+@keyframes meteorMove {
+  from {
+    transform: translate(-30%, -30%);
+  }
+  to {
+    transform: translate(30%, 30%);
+  }
+}
+body > *:not(#meteor-layer) {
+  position: relative;
+  z-index: 1;
+}
