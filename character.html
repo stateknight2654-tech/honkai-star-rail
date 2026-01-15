@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thông tin nhân vật</title>
+    <style>
+        body { background: radial-gradient(ellipse at bottom, #0f172a 0%, #020617 100%); color: white; font-family: "Segoe UI", Arial, sans-serif; margin: 0; padding: 20px; position: relative; }
+        body::before { content: ""; position: fixed; inset: 0; background: radial-gradient(1200px 800px at 10% 90%, rgba(14,165,233,0.12), transparent 60%), radial-gradient(800px 600px at 90% 10%, rgba(99,102,241,0.12), transparent 60%); filter: blur(20px); opacity: 0.8; pointer-events: none; z-index: 0; animation: nebula 24s linear infinite alternate; }
+        body::after { content: ""; position: fixed; inset: 0; background-image: radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,0.7), transparent 60%), radial-gradient(2px 2px at 30% 80%, rgba(255,255,255,0.6), transparent 60%), radial-gradient(2px 2px at 75% 25%, rgba(255,255,255,0.7), transparent 60%), radial-gradient(2px 2px at 55% 60%, rgba(255,255,255,0.6), transparent 60%); opacity: 0.35; pointer-events: none; z-index: 0; animation: starDrift 40s linear infinite; }
+        @keyframes nebula { from { transform: translate3d(0,0,0) scale(1);} to { transform: translate3d(0,-10px,0) scale(1.02);} }
+        @keyframes starDrift { from { transform: translate3d(0,0,0);} to { transform: translate3d(0,-30px,0);} }
+        .container { position: relative; z-index: 1; max-width: 880px; margin: auto; padding: 28px; border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; background: rgba(2,6,23,0.6); backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+        
+        .header { display: flex; gap: 20px; align-items: center; border-bottom: 2px solid #f3c316; padding-bottom: 20px; margin-bottom: 10px; }
+        .char-portrait { width: 140px; height: 140px; border-radius: 12px; border: 2px solid #f3c316; object-fit: cover; box-shadow: 0 0 20px rgba(243,195,22,0.35); }
+        
+        .build-section { 
+            margin-top: 15px; 
+            background: rgba(21,24,33,0.8); 
+            padding: 15px 20px; 
+            border-radius: 12px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .build-info { flex: 1; }
+        h1 { color: #f3c316; margin: 0; font-size: 2.2em; text-shadow: 0 0 12px rgba(243,195,22,0.3); }
+        h3 { color: #f3c316; margin: 0 0 5px 0; font-size: 1.1em; }
+        p { margin: 0; color: #e0e0e0; }
+
+        .build-img { 
+            width: 70px; 
+            height: 70px; 
+            object-fit: contain; 
+            background: rgba(0,0,0,0.25); 
+            border-radius: 10px; 
+            padding: 5px;
+            margin-left: 15px;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 0 12px rgba(255,255,255,0.12);
+        }
+
+        .back-btn { display: inline-block; margin-bottom: 20px; color: #f3c316; text-decoration: none; font-weight: bold; }
+        .error-box { text-align: center; padding: 50px; }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; text-align: center; }
+            .char-portrait { width: 120px; height: 120px; }
+            .build-section { flex-direction: column; gap: 10px; align-items: flex-start; }
+            .build-img { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">← Quay lại trang chủ</a>
+
+    <div id="content" class="container">
+        <h1 style="text-align:center;">Đang tải dữ liệu...</h1>
+    </div>
+
+    <script src="characters.js"></script> 
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const charId = params.get('id');
+            const display = document.getElementById('content');
+
+            // Kiểm tra dữ liệu
+            if (typeof characterData !== 'undefined' && charId && characterData[charId]) {
+                const data = characterData[charId];
+
+                // Logic chọn ID ảnh: Nếu có relic_id thì dùng, không thì dùng charId làm mặc định
+                const rID = data.relic_id || charId;
+                const pID = data.planar_id || charId;
+
+                display.innerHTML = `
+                    <div class="header">
+                        <img src="anh/characters/${charId}.webp" class="char-portrait" loading="lazy" alt="${data.name}" onerror="this.src='anh/characters/default.webp'">
+                        <div class="info">
+                            <h1>${data.name}</h1>
+                            <p>Vận mệnh: <b>${data.path}</b> | Thuộc tính: <b>${data.element}</b></p>
+                        </div>
+                    </div>
+
+                    <div class="build-section">
+                        <div class="build-info">
+                            <h3>🛡️ Di Vật khuyên dùng:</h3>
+                            <p>${data.relics}</p>
+                        </div>
+                        <img src="anh/items/relics/${rID}.webp" class="build-img" loading="lazy" alt="Di Vật" onerror="this.style.display='none'">
+                    </div>
+
+                    <div class="build-section">
+                        <div class="build-info">
+                            <h3>💎 Phụ Kiện Vị Diện:</h3>
+                            <p>${data.ornaments}</p>
+                        </div>
+                        <img src="anh/items/ornaments/${pID}.webp" class="build-img" loading="lazy" alt="Phụ Kiện Vị Diện" onerror="this.style.display='none'">
+                    </div>
+
+                    <div class="build-section">
+                        <div class="build-info">
+                            <h3>⚔️ Nón Ánh Sáng:</h3>
+                            <p>${data.lightCone}</p>
+                        </div>
+                        <img src="anh/items/lightcones/${charId}.webp" class="build-img" loading="lazy" alt="Nón Ánh Sáng" onerror="this.style.display='none'">
+                    </div>
+
+                    <div class="build-section">
+                        <div class="build-info">
+                            <h3>📊 Chỉ số ưu tiên:</h3>
+                            <p>${data.stats}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                display.innerHTML = `
+                    <div class="error-box">
+                        <h1 style="color: #ff4d4d;">LỖI: KHÔNG TÌM THẤY DỮ LIỆU!</h1>
+                        <p>ID trên link: <b>${charId || 'Trống'}</b> không khớp với file characters.js.</p>
+                        <p>Vui lòng kiểm tra lại file <b>characters.js</b></p>
+                    </div>`;
+            }
+        };
+    </script>
+</body>
+</html>
