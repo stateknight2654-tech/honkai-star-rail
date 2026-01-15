@@ -91,6 +91,6 @@ const characterData = {
 
     // --- KÝ ỨC (REMEMBRANCE - Vận mệnh mới) ---
     "cyrene": { name: "Cyrene", relics: "Di Vật Mới", relic_id: "luong-tu", ornaments: "Keel", planar_id: "keel", path: "Ký Ức", element: "Lôi", lightCone: "Ánh Sáng Cổ Đại", stats: "Tốc độ > Công %" },
-    "evernight": { name: "Evernight", relics: "Di Vật Mới", relic_id: "luong-tu", ornaments: "Keel", planar_id: "keel", path: "Ký Ức", element: "Lượng Tử", lightCone: "Màn Đêm Vĩnh Cửu", stats: "Chính xác > Tốc độ" },
+    "march-7th-evernight": { name: "March 7th • Evernight", relics: "Di Vật Mới", relic_id: "luong-tu", ornaments: "Keel", planar_id: "keel", path: "Ký Ức", element: "Lượng Tử", lightCone: "Màn Đêm Vĩnh Cửu", stats: "Chính xác > Tốc độ" },
     "hyacine": { name: "Hyacine", relics: "Di Vật Mới", relic_id: "luong-tu", ornaments: "Keel", planar_id: "keel", path: "Ký Ức", element: "Phong", lightCone: "Cánh Hoa Rơi", stats: "Tốc độ > HP%" },
 };
