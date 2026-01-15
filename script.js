@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("scroll", () => {
 
-    /* ===== Reveal ===== */
     document.querySelectorAll(".reveal").forEach(el => {
       const rect = el.getBoundingClientRect();
       if (rect.top < window.innerHeight * 0.9) {
@@ -37,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    /* ===== TRANG KHÔNG CÓ INTRO (character.html) ===== */
+    // TRANG NHÂN VẬT (không có intro)
     if (!introSection) {
       if (!meteorInterval) {
         meteorInterval = setInterval(createMeteor, 600);
@@ -45,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    /* ===== TRANG CHỦ ===== */
+    // TRANG CHỦ
     const rect = introSection.getBoundingClientRect();
     const introVisible =
       rect.top < window.innerHeight &&
@@ -65,5 +64,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // kích hoạt ngay khi load
   window.dispatchEvent(new Event("scroll"));
-
 });
