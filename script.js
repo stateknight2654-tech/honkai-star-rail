@@ -1,55 +1,72 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-  function scrollToIntro() {
+function scrollToIntro() {
     const intro = document.getElementById("intro");
     if (intro) {
-      intro.scrollIntoView({ behavior: "smooth" });
+        intro.scrollIntoView({ behavior: "smooth" });
     }
-  }
+}
 
-  const meteorLayer = document.getElementById("meteor-layer");
-  const introSection = document.getElementById("intro");
+// ===== SAO BĂNG INTRO =====
+const meteorLayer = document.getElementById("meteor-layer");
+const introSection = document.getElementById("intro");
+let meteorInterval = null;
 
-  let meteorInterval = null;
-
-  function createMeteor() {
+function createMeteor() {
     if (!meteorLayer) return;
 
     const meteor = document.createElement("div");
     meteor.className = "meteor";
 
-    meteor.style.left = Math.random() * window.innerWidth + "px";
-    meteor.style.animationDuration =
-      (1.5 + Math.random() * 1.5) + "s";
+    const width = meteorLayer.clientWidth || window.innerWidth;
+    meteor.style.left = Math.random() * width + "px";
+    meteor.style.animationDuration = (1.5 + Math.random() * 1.5) + "s";
 
     meteorLayer.appendChild(meteor);
 
-    setTimeout(() => meteor.remove(), 3000);
-  }
+    setTimeout(() => {
+        meteor.remove();
+    }, 3000);
+}
 
-  window.addEventListener("scroll", () => {
+window.addEventListener("scroll", () => {
+    if (!introSection) return;
 
-    document.querySelectorAll(".reveal").forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.9) {
-        el.classList.add("visible");
-      }
-    });
+    const rect = introSection.getBoundingClientRect();
+    const isInView =
+        rect.top < window.innerHeight &&
+        rect.bottom > 0;
 
-    // TRANG NHÂN VẬT (không có intro)
-    if (!introSection) {
-      if (!meteorInterval) {
-        meteorInterval = setInterval(createMeteor, 600);
-      }
-      return;
+    if (isInView) {
+        if (!meteorInterval) {
+            meteorInterval = setInterval(createMeteor, 600);
+        }
+    } else {
+        if (meteorInterval) {
+            clearInterval(meteorInterval);
+            meteorInterval = null;
+        }
     }
-
-    // TRANG CHỦ
-    if (!meteorInterval) {
-    meteorInterval = setInterval(createMeteor, 600);
-  }
-  });
-
-  // kích hoạt ngay khi load
-  window.dispatchEvent(new Event("scroll"));
 });
+
+function optimizeImages() {
+    const cards = document.querySelectorAll(".character-grid a");
+    cards.forEach(card => {
+        const img = card.querySelector("img");
+        const nameEl = card.querySelector("span");
+        if (img) {
+            img.loading = "lazy";
+            img.alt = nameEl ? nameEl.textContent : "Nhân vật";
+            img.onerror = function () {
+                if (this.src.indexOf("default.webp") === -1) {
+                    this.src = "anh/characters/default.webp";
+                }
+            };
+        }
+    });
+    const worldImgs = document.querySelectorAll(".world-grid img");
+    worldImgs.forEach(img => {
+        img.loading = "lazy";
+        img.alt = "Bản đồ";
+    });
+}
+
+document.addEventListener("DOMContentLoaded", optimizeImages);
