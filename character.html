@@ -4,6 +4,32 @@
     <meta charset="UTF-8">
     <title>Thông tin nhân vật</title>
     <style>
+            /* ===== METEOR EFFECT ===== */
+        #meteor-layer {
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          z-index: 999;
+          overflow: hidden;
+        }
+        
+        .meteor {
+          position: absolute;
+          top: -10px;
+          width: 2px;
+          height: 80px;
+          background: linear-gradient(white, rgba(255,255,255,0));
+          opacity: 0.8;
+          transform: rotate(45deg);
+          animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+          to {
+            transform: translate(-300px, 100vh) rotate(45deg);
+            opacity: 0;
+          }
+        }
         body { background: #0b0d13; color: white; font-family: Arial, sans-serif; margin: 0; padding: 20px; }
         .container { max-width: 800px; margin: auto; padding: 25px; border: 1px solid #333; border-radius: 15px; background: #151821; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
@@ -53,82 +79,79 @@
         <script src="characters.js"></script>
         <script src="script.js"></script>
         
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            ...
-          });
+       <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        
+          const params = new URLSearchParams(window.location.search);
+          const charId = params.get("id");
+          const display = document.getElementById("content");
+        
+          if (typeof characterData !== "undefined" && charId && characterData[charId]) {
+        
+            const data = characterData[charId];
+            const rID = data.relic_id || charId;
+            const pID = data.planar_id || charId;
+        
+            display.innerHTML = `
+              <div class="header">
+                <img src="anh/characters/${charId}.webp"
+                     class="char-portrait"
+                     onerror="this.src='anh/characters/default.webp'">
+        
+                <div class="info">
+                  <h1>${data.name}</h1>
+                  <p>Vận mệnh: <b>${data.path}</b> | Thuộc tính: <b>${data.element}</b></p>
+                </div>
+              </div>
+        
+              <div class="build-section">
+                <div class="build-info">
+                  <h3>🛡️ Di Vật khuyên dùng:</h3>
+                  <p>${data.relics}</p>
+                </div>
+                <img src="anh/items/relics/${rID}.webp"
+                     class="build-img"
+                     onerror="this.style.display='none'">
+              </div>
+        
+              <div class="build-section">
+                <div class="build-info">
+                  <h3>💎 Phụ Kiện Vị Diện:</h3>
+                  <p>${data.ornaments}</p>
+                </div>
+                <img src="anh/items/ornaments/${pID}.webp"
+                     class="build-img"
+                     onerror="this.style.display='none'">
+              </div>
+        
+              <div class="build-section">
+                <div class="build-info">
+                  <h3>⚔️ Nón Ánh Sáng:</h3>
+                  <p>${data.lightCone}</p>
+                </div>
+                <img src="anh/items/lightcones/${charId}.webp"
+                     class="build-img"
+                     onerror="this.style.display='none'">
+              </div>
+        
+              <div class="build-section">
+                <div class="build-info">
+                  <h3>📊 Chỉ số ưu tiên:</h3>
+                  <p>${data.stats}</p>
+                </div>
+              </div>
+            `;
+        
+          } else {
+            display.innerHTML = `
+              <div class="error-box">
+                <h1 style="color:#ff4d4d;">LỖI: KHÔNG TÌM THẤY DỮ LIỆU</h1>
+                <p>ID: <b>${charId || "Trống"}</b></p>
+                <p>Kiểm tra lại file <b>characters.js</b></p>
+              </div>
+            `;
+          }
+        });
         </script>
-      const params = new URLSearchParams(window.location.search);
-      const charId = params.get("id");
-      const display = document.getElementById("content");
-    
-      if (typeof characterData !== "undefined" && charId && characterData[charId]) {
-    
-        const data = characterData[charId];
-        const rID = data.relic_id || charId;
-        const pID = data.planar_id || charId;
-    
-        display.innerHTML = `
-          <div class="header">
-            <img src="anh/characters/${charId}.webp"
-                 class="char-portrait"
-                 onerror="this.src='anh/characters/default.webp'">
-    
-            <div class="info">
-              <h1>${data.name}</h1>
-              <p>Vận mệnh: <b>${data.path}</b> | Thuộc tính: <b>${data.element}</b></p>
-            </div>
-          </div>
-    
-          <div class="build-section">
-            <div class="build-info">
-              <h3>🛡️ Di Vật khuyên dùng:</h3>
-              <p>${data.relics}</p>
-            </div>
-            <img src="anh/items/relics/${rID}.webp"
-                 class="build-img"
-                 onerror="this.style.display='none'">
-          </div>
-    
-          <div class="build-section">
-            <div class="build-info">
-              <h3>💎 Phụ Kiện Vị Diện:</h3>
-              <p>${data.ornaments}</p>
-            </div>
-            <img src="anh/items/ornaments/${pID}.webp"
-                 class="build-img"
-                 onerror="this.style.display='none'">
-          </div>
-    
-          <div class="build-section">
-            <div class="build-info">
-              <h3>⚔️ Nón Ánh Sáng:</h3>
-              <p>${data.lightCone}</p>
-            </div>
-            <img src="anh/items/lightcones/${charId}.webp"
-                 class="build-img"
-                 onerror="this.style.display='none'">
-          </div>
-    
-          <div class="build-section">
-            <div class="build-info">
-              <h3>📊 Chỉ số ưu tiên:</h3>
-              <p>${data.stats}</p>
-            </div>
-          </div>
-        `;
-    
-      } else {
-        display.innerHTML = `
-          <div class="error-box">
-            <h1 style="color:#ff4d4d;">LỖI: KHÔNG TÌM THẤY DỮ LIỆU</h1>
-            <p>ID: <b>${charId || "Trống"}</b></p>
-            <p>Kiểm tra lại file <b>characters.js</b></p>
-          </div>
-        `;
-      }
-    });
-</script>
-<div id="meteor-layer"></div>
 </body>
 </html>
