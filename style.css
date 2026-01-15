@@ -6,8 +6,49 @@
 }
 
 body {
-    background-color: #0b0f1a;
+    background: radial-gradient(ellipse at bottom, #0f172a 0%, #020617 100%);
+    background-attachment: fixed;
     color: white;
+    scroll-behavior: smooth; /* Giúp cuộn trang mượt mà */
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(1200px 800px at 10% 90%, rgba(14,165,233,0.12), transparent 60%),
+        radial-gradient(800px 600px at 90% 10%, rgba(99,102,241,0.12), transparent 60%),
+        radial-gradient(600px 600px at 50% 50%, rgba(255,255,255,0.06), transparent 40%);
+    filter: blur(20px);
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 0;
+    animation: nebula 24s linear infinite alternate;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,0.7), transparent 60%),
+                      radial-gradient(2px 2px at 30% 80%, rgba(255,255,255,0.6), transparent 60%),
+                      radial-gradient(2px 2px at 75% 25%, rgba(255,255,255,0.7), transparent 60%),
+                      radial-gradient(2px 2px at 55% 60%, rgba(255,255,255,0.6), transparent 60%);
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+    animation: starDrift 40s linear infinite;
+}
+
+@keyframes nebula {
+    from { transform: translate3d(0,0,0) scale(1); }
+    to   { transform: translate3d(0,-10px,0) scale(1.02); }
+}
+
+@keyframes starDrift {
+    from { transform: translate3d(0,0,0); }
+    to   { transform: translate3d(0,-30px,0); }
 }
 
 /* ================= NAVBAR ================= */
@@ -72,15 +113,17 @@ body {
 }
 
 .overlay button {
-    padding: 12px 30px;
+    padding: 14px 40px;
     border: none;
     border-radius: 30px;
-    background: linear-gradient(90deg, #3b82f6, #9333ea);
+    background: linear-gradient(90deg, #00c6ff, #0072ff); /* Đổi sang màu xanh công nghệ */
     color: white;
+    font-weight: bold;
+    font-size: 1.1em;
     cursor: pointer;
     transition: 0.3s;
+    box-shadow: 0 0 15px rgba(0, 198, 255, 0.4);
 }
-
 .overlay button:hover {
     transform: scale(1.1);
 }
@@ -92,6 +135,73 @@ body {
     text-align: center;
     position: relative;
     overflow: hidden;
+} 
+/* ===== SAO BĂNG CHẠY XUYÊN SUỐT ===== */
+.intro::before,
+.intro::after,
+.features::before,
+.features::after {
+    content: "";
+    position: absolute;
+    top: -150%;
+    left: -150%;
+    width: 400%;
+    height: 400%;
+    pointer-events: none;
+    background-image: linear-gradient(
+        120deg,
+        transparent 45%,
+        rgba(255,255,255,0.6),
+        transparent 55%
+    );
+    animation: meteor 16s linear infinite;
+    opacity: 0.12;
+    z-index: 1;
+}
+
+/* lớp thứ 2 lệch pha */
+.intro::after,
+.features::after {
+    animation-duration: 24s;
+    opacity: 0.06;
+}
+
+/* đẩy nội dung lên trên sao băng */
+.intro > *,
+.features > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Lớp meteor động do JS tạo */
+#meteor-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+.meteor {
+    position: absolute;
+    top: -20px;
+    width: 2px;
+    height: 80px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0));
+    filter: drop-shadow(0 0 6px rgba(255,255,255,0.6));
+    animation-name: meteorFly;
+    animation-timing-function: linear;
+}
+@keyframes meteorFly {
+    from { transform: translate3d(0, -40px, 0) rotate(20deg); opacity: 1; }
+    to   { transform: translate3d(0, 420px, 0) rotate(20deg); opacity: 0; }
+}
+
+@keyframes meteor {
+    from {
+        transform: translate(-20%, -20%);
+    }
+    to {
+        transform: translate(20%, 20%);
+    }
 }
 /* ================= NHÂN VẬT ================= */
 .character-grid {
@@ -103,13 +213,23 @@ body {
 
 .character-grid a {
     text-decoration: none;
-    color: #facc15;
-    border: 2px solid #facc15;
+    color: #ffffff; /* Đổi màu chữ tên nhân vật sang trắng cho dễ nhìn */
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    padding: 8px;
-    background: transparent;
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
-    animation: glow 2.5s ease-in-out infinite alternate;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05); /* Hiệu ứng kính */
+    backdrop-filter: blur(10px);
+    transition: all 0.35s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.character-grid a:hover {
+    transform: translateY(-10px) scale(1.05);
+    border-color: #60a5fa;
+    background: rgba(96, 165, 250, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
 .character-grid img {
@@ -160,6 +280,20 @@ body {
     width: 55%;
 }
 
+.feature-block.reverse img {
+    width: 45%;
+}
+
+@media (max-width: 768px) {
+    .feature-block.reverse {
+        flex-direction: column;
+        text-align: center;
+    }
+    .feature-block.reverse .text,
+    .feature-block.reverse img {
+        width: 100%;
+    }
+}
 /* ================= THẾ GIỚI ================= */
 .world-grid {
     display: grid;
@@ -193,58 +327,25 @@ footer {
         transform: translateY(0);
     }
 }
-
-body > *:not(#meteor-layer) {
-  position: relative;
-  z-index: 1;
-}
-// các code khác (nếu có)
-// reveal khi scroll
-// hover effect
-// v.v...
-
-// ================= SAO BĂNG INTRO =================
-function scrollToIntro() {
-  document.getElementById("intro").scrollIntoView({
-    behavior: "smooth"
-  });
+/* Trang trí thêm cho phần Giới thiệu trở xuống */
+#intro, #features {
+    background: rgba(255, 255, 255, 0.02); /* Tạo nền mờ nhẹ */
+    border-radius: 20px;
+    margin: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-const meteorLayer = document.getElementById("meteor-layer");
-const introSection = document.getElementById("intro");
-
-let meteorInterval = null;
-
-function createMeteor() {
-  const meteor = document.createElement("div");
-  meteor.className = "meteor";
-
-  meteor.style.left = Math.random() * window.innerWidth + "px";
-  meteor.style.animationDuration = (1.5 + Math.random() * 1.5) + "s";
-
-  meteorLayer.appendChild(meteor);
-
-  setTimeout(() => {
-    meteor.remove();
-  }, 3000);
+/* Hiệu ứng kính mờ cho các ô nhân vật */
+.character-grid a {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease-in-out;
 }
 
-window.addEventListener("scroll", () => {
-  if (!introSection) return;
-
-  const rect = introSection.getBoundingClientRect();
-  const isInView =
-    rect.top < window.innerHeight &&
-    rect.bottom > 0;
-
-  if (isInView) {
-    if (!meteorInterval) {
-      meteorInterval = setInterval(createMeteor, 600);
-    }
-  } else {
-    if (meteorInterval) {
-      clearInterval(meteorInterval);
-      meteorInterval = null;
-    }
-  }
-});
+.character-grid a:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+    border-color: #60a5fa !important;
+}
