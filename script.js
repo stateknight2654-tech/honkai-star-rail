@@ -45,21 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // TRANG CHỦ
-    const rect = introSection.getBoundingClientRect();
-    const introVisible =
-      rect.top < window.innerHeight &&
-      rect.bottom > 0;
-
-    if (introVisible) {
-      if (!meteorInterval) {
-        meteorInterval = setInterval(createMeteor, 600);
-      }
-    } else {
-      if (meteorInterval) {
-        clearInterval(meteorInterval);
-        meteorInterval = null;
-      }
-    }
+    if (!meteorInterval) {
+    meteorInterval = setInterval(createMeteor, 600);
+  }
   });
 
   // kích hoạt ngay khi load
