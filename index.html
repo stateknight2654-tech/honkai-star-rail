@@ -5,6 +5,31 @@
     <title>Honkai: Star Rail | HoYoverse</title>
     <link rel="stylesheet" href="style.css">
       <style>
+            #meteor-layer {
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          z-index: 999;
+          overflow: hidden;
+        }
+        
+        .meteor {
+          position: absolute;
+          top: -10px;
+          width: 2px;
+          height: 80px;
+          background: linear-gradient(white, rgba(255,255,255,0));
+          opacity: 0.8;
+          transform: rotate(45deg);
+          animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+          to {
+            transform: translate(-300px, 100vh) rotate(45deg);
+            opacity: 0;
+          }
+        }
     /* Hover */
     a:hover, button:hover {
       transform: scale(1.05);
