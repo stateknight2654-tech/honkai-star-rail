@@ -1,21 +1,12 @@
 function scrollToIntro() {
-    document.getElementById("intro").scrollIntoView({
-        behavior: "smooth"
-    });
-}
-/* Scroll reveal */
-window.addEventListener("scroll", () => {
-  document.querySelectorAll(".reveal").forEach(el => {
-    if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
-      el.classList.add("visible");
-    }
+  document.getElementById("intro").scrollIntoView({
+    behavior: "smooth"
   });
-});
-
-/* ===== SAO BĂNG ===== */
+}
 
 const meteorLayer = document.getElementById("meteor-layer");
 const featureSection = document.getElementById("features");
+
 let meteorInterval = null;
 
 function createMeteor() {
@@ -26,14 +17,29 @@ function createMeteor() {
   meteor.style.animationDuration = 1.5 + Math.random() * 1.5 + "s";
 
   meteorLayer.appendChild(meteor);
-
   setTimeout(() => meteor.remove(), 3000);
 }
 
 window.addEventListener("scroll", () => {
+
+  /* Scroll reveal */
+  document.querySelectorAll(".reveal").forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+      el.classList.add("visible");
+    }
+  });
+
+  /* Sao băng */
   const featureTop = featureSection.getBoundingClientRect().top;
 
-  if (featureTop < window.innerHeight && !meteorInterval) {
-    meteorInterval = setInterval(createMeteor, 500);
+  if (featureTop < window.innerHeight) {
+    if (!meteorInterval) {
+      meteorInterval = setInterval(createMeteor, 500);
+    }
+  } else {
+    if (meteorInterval) {
+      clearInterval(meteorInterval);
+      meteorInterval = null;
+    }
   }
 });
