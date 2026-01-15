@@ -1,7 +1,8 @@
 function scrollToIntro() {
-  document.getElementById("intro").scrollIntoView({
-    behavior: "smooth"
-  });
+  const intro = document.getElementById("intro");
+  if (intro) {
+    intro.scrollIntoView({ behavior: "smooth" });
+  }
 }
 
 const meteorLayer = document.getElementById("meteor-layer");
@@ -21,14 +22,12 @@ function createMeteor() {
 
   meteorLayer.appendChild(meteor);
 
-  setTimeout(() => {
-    meteor.remove();
-  }, 3000);
+  setTimeout(() => meteor.remove(), 3000);
 }
 
 window.addEventListener("scroll", () => {
 
-  /* ===== Reveal khi scroll ===== */
+  /* ===== Reveal ===== */
   document.querySelectorAll(".reveal").forEach(el => {
     const rect = el.getBoundingClientRect();
     if (rect.top < window.innerHeight * 0.9) {
@@ -36,9 +35,15 @@ window.addEventListener("scroll", () => {
     }
   });
 
-  /* ===== Sao băng CHỈ ở phần intro ===== */
-  if (!introSection) return;
+  /* ===== KHÔNG CÓ INTRO → TRANG NHÂN VẬT ===== */
+  if (!introSection) {
+    if (!meteorInterval) {
+      meteorInterval = setInterval(createMeteor, 600);
+    }
+    return;
+  }
 
+  /* ===== CÓ INTRO → TRANG CHỦ ===== */
   const rect = introSection.getBoundingClientRect();
   const introVisible =
     rect.top < window.innerHeight &&
