@@ -1,4 +1,4 @@
-const characters = {
+const characterData = {
     // --- VUI VẺ / KÝ ỨC (Hệ mới 4.0+) ---
     "yao-guang": { name: "Yao Guang", relics: "Di Vật Mới 4.0", relic_id: "vui-ve", ornaments: "Salsotto", planar_id: "salsotto", path: "Vui Vẻ", element: "Băng", lightCone: "Bình Minh Rực Cháy", stats: "Tốc độ > Crit" },
     "sparxie": { name: "Sparxie", relics: "Di Vật Mới 4.0", relic_id: "vui-ve", ornaments: "Keel Gãy", planar_id: "keel", path: "Vui Vẻ", element: "Lượng Tử", lightCone: "Điệu Nhảy Aha", stats: "Tốc độ > HP%" },
